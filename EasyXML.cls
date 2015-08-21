@@ -62,7 +62,9 @@ global virtual class EasyXML extends EasyParser {
                     location = location + DOUBLE_UNDERSCORES + metadata.get(location);
                 } else 
                     metadata.put(location, 0);
-        
+                
+                setAttributes(reader, location);
+                
                 if (doLog)
                     System.debug('START_ELEMENT: ' + location);
                 else 
@@ -90,6 +92,14 @@ global virtual class EasyXML extends EasyParser {
             }
             
             reader.next();
+        }
+    }
+    
+    private void setAttributes(XmlStreamReader reader, String location) {
+        if (reader.getAttributeCount() == 0) return;
+        
+        for(Integer i = 0; i < reader.getAttributeCount(); i++) {
+            container.put(location + SLASH + 'ATTR:' + reader.getAttributeLocalName(i), reader.getAttributeValueAt(i));
         }
     }
 }
